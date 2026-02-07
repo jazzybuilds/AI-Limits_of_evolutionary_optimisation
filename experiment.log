@@ -1,0 +1,55 @@
+Starting experiment with 7 neutrality levels
+Running 20 replicates per level
+Total runs: 140
+Parameters: N=50, K=2, generations=500
+------------------------------------------------------------
+
+Neutrality = 0.00 (0% neutral genes)
+  Replicate 5/20 [Run 5/140] - Est. remaining: 4.1min
+  Replicate 10/20 [Run 10/140] - Est. remaining: 4.0min
+  Replicate 15/20 [Run 15/140] - Est. remaining: 3.8min
+  Replicate 20/20 [Run 20/140] - Est. remaining: 3.7min
+
+Neutrality = 0.15 (15% neutral genes)
+  Replicate 5/20 [Run 25/140] - Est. remaining: 3.5min
+  Replicate 10/20 [Run 30/140] - Est. remaining: 3.4min
+  Replicate 15/20 [Run 35/140] - Est. remaining: 3.2min
+  Replicate 20/20 [Run 40/140] - Est. remaining: 3.0min
+
+Neutrality = 0.30 (30% neutral genes)
+  Replicate 5/20 [Run 45/140] - Est. remaining: 2.9min
+  Replicate 10/20 [Run 50/140] - Est. remaining: 2.7min
+  Replicate 15/20 [Run 55/140] - Est. remaining: 2.6min
+  Replicate 20/20 [Run 60/140] - Est. remaining: 2.4min
+
+Neutrality = 0.45 (45% neutral genes)
+  Replicate 5/20 [Run 65/140] - Est. remaining: 2.3min
+  Replicate 10/20 [Run 70/140] - Est. remaining: 2.1min
+  Replicate 15/20 [Run 75/140] - Est. remaining: 2.0min
+  Replicate 20/20 [Run 80/140] - Est. remaining: 1.8min
+
+Neutrality = 0.60 (60% neutral genes)
+  Replicate 5/20 [Run 85/140] - Est. remaining: 1.7min
+  Replicate 10/20 [Run 90/140] - Est. remaining: 1.5min
+  Replicate 15/20 [Run 95/140] - Est. remaining: 1.4min
+  Replicate 20/20 [Run 100/140] - Est. remaining: 1.2min
+
+Neutrality = 0.75 (75% neutral genes)
+  Replicate 5/20 [Run 105/140] - Est. remaining: 1.1min
+  Replicate 10/20 [Run 110/140] - Est. remaining: 0.9min
+  Replicate 15/20 [Run 115/140] - Est. remaining: 0.8min
+  Replicate 20/20 [Run 120/140] - Est. remaining: 0.6min
+
+Neutrality = 0.90 (90% neutral genes)
+  Replicate 5/20 [Run 125/140] - Est. remaining: 0.5min
+  Replicate 10/20 [Run 130/140] - Est. remaining: 0.3min
+  Replicate 15/20 [Run 135/140] - Est. remaining: 0.2min
+  Replicate 20/20 [Run 140/140] - Est. remaining: 0.0min
+
+============================================================
+Experiment complete!
+Total time: 4.3 minutes
+Results saved to: results/experiment_results_1767412532.json
+============================================================
+
+To analyze results, run: python analyze_results.py results/experiment_results_1767412532.json
