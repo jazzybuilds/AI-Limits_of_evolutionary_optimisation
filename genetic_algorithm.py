@@ -37,6 +37,11 @@ class GeneticAlgorithm:
         self.genome_length = fitness_landscape.N
         self.population = None
         self.fitness_cache = {}
+
+        # Genome encoding: read from landscape so the GA adapts automatically.
+        # 'binary'    -> randint init, bit-flip mutation (default)
+        # 'realvalued' -> uniform [0,1] init, clipped Gaussian mutation
+        self.genome_encoding = getattr(fitness_landscape, 'genome_encoding', 'binary')
         
         # Statistics tracking
         self.generation = 0
@@ -57,10 +62,16 @@ class GeneticAlgorithm:
     
     def initialize_population(self):
         """Create random initial population."""
-        self.population = [
-            self.rng.randint(0, 2, size=self.genome_length)
-            for _ in range(self.population_size)
-        ]
+        if self.genome_encoding == 'realvalued':
+            self.population = [
+                self.rng.uniform(0.0, 1.0, size=self.genome_length).astype(np.float64)
+                for _ in range(self.population_size)
+            ]
+        else:
+            self.population = [
+                self.rng.randint(0, 2, size=self.genome_length)
+                for _ in range(self.population_size)
+            ]
         self.fitness_cache = {}
         self.generation = 0
         if self.lineage_tracking:
@@ -81,7 +92,7 @@ class GeneticAlgorithm:
         Returns:
             Fitness value
         """
-        genome_key = tuple(genome)
+        genome_key = genome.tobytes()
         if genome_key not in self.fitness_cache:
             self.fitness_cache[genome_key] = self.landscape.evaluate(genome)
         return self.fitness_cache[genome_key]
@@ -118,18 +129,18 @@ class GeneticAlgorithm:
     
     def mutate(self, genome):
         """
-        Apply bit-flip mutation.
-        
-        Args:
-            genome: Binary array (modified in place)
-            
-        Returns:
-            Mutated genome
+        Apply mutation.
+
+        Binary:     bit-flip with probability mutation_rate per position.
+        Realvalued: Gaussian perturbation with sigma=mutation_rate, clipped to [0, 1].
         """
-        for i in range(len(genome)):
-            if self.rng.random() < self.mutation_rate:
-                genome[i] = 1 - genome[i]  # Flip bit
-        return genome
+        if self.genome_encoding == 'realvalued':
+            noise = self.rng.normal(0.0, self.mutation_rate, size=len(genome))
+            return np.clip(genome + noise, 0.0, 1.0)
+        else:
+            mask = self.rng.random(len(genome)) < self.mutation_rate
+            genome[mask] ^= 1
+            return genome
     
     def evolve_generation(self):
         """Run one generation of evolution."""

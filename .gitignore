@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+venv/
+.venv/
+*.egg-info/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+experiment.log
+
+# Compiled output
+*.pdf
