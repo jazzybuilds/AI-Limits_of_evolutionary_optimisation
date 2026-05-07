@@ -342,6 +342,7 @@ Genomes were snapshotted at generations 0, 10, 20, 30, 40, and 50 (and every
 25 generations up to 200 for LunarLanderContinuous) to track active-bit drift
 independently of neutral-bit drift.
 
+Full source code is located at: https://github.com/jazzybuilds/AI-Limits_of_evolutionary_optimisation
 
 = 3 Results
 
@@ -668,33 +669,44 @@ evolutionary search. This is the mechanistic source of the plateau.
 
 == Evaluation noise: a secondary complication
 
-While the action-space mismatch explains the ceiling, evaluation noise
-compounds it. Each individual is scored over only 12 episodes in a highly
-stochastic environment. The same controller can receive reward −80 in one
-episode and +50 in the next, depending on landing pad position and wind. With
-12 samples, the fitness estimate is coarse enough that tournament selection
-regularly promotes the wrong individual. This weakens the GA's ability to
-exploit small genuine advantages.
+While the action-space mismatch is the primary cause of the discrete ceiling,
+a second problem compounds it: noisy fitness estimates. LunarLander is
+stochastic — the landing pad spawns in a random position each episode and
+wind varies — so the same controller can score −80 in one episode and +50 in
+the next, purely due to luck. Each individual is evaluated over only 12
+episodes, which is not enough to reliably distinguish a genuinely better
+controller from a luckier one. As a result, tournament selection will
+sometimes promote the wrong individual, wasting generations and preventing
+the GA from exploiting small but real improvements.
 
-The real-valued encoding (Test 5) illustrates this. Selection *did* function:
-best fitness improved roughly 25× above the random baseline (0.009 to 0.22).
-But mean population fitness remained noisy and low (0.04–0.12), suggesting
-the large mutation step ($sigma = 0.05$ over 176 parameters, L2 norm
-$approx 0.66$) scattered offspring too widely for the population to stably
-track its best individuals. This large displacement likely prevents the
-population mean from converging even when a high-performing individual is
-found — each generation, offspring are placed far enough from the parent
-that the fitness advantage is immediately dissipated. Note that the Hamming diversity readings for Test
-3 (≈173–174) should be disregarded: the Hamming metric counts exact positional
-equality, which is trivially never true for floating-point numbers after any
-mutation. It is designed for binary genomes and is meaningless in a continuous
-setting.
+The real-valued encoding (Test 5) shows this effect most clearly. The GA
+*did* make progress: best fitness improved from ~0.009 at generation 1 to
+0.22 by generation 50 — roughly 25× above random. But mean population
+fitness stayed persistently low and noisy (0.04–0.12 throughout), which
+points to a second problem beyond noise: the mutation step is too large.
+Test 5 applies Gaussian noise with $sigma = 0.05$ to each of the 176
+parameters simultaneously. Across all parameters, this adds up to a large
+total shift — an L2 norm of $approx 0.66$, meaning the child's weight vector
+is on average 0.66 units away from the parent's in 176-dimensional space.
+To put this concretely: a parent that had carefully tuned its main-engine
+timing will produce children whose weights are sufficiently perturbed that
+the timing behaviour is completely disrupted. The good parent is discovered,
+but its offspring are scattered so far across parameter space that none of
+them inherit the useful behaviour. So even when a high-performing individual
+is found, the population mean never climbs — the fitness advantage is
+immediately lost in the next generation.
 
-With the action-space barrier removed (continuous variant), noise is less
-damaging because the fitness gradient is smooth and every weight change that
-improves thrust timing produces a proportional change in reward. The 200-generation
-budget allowed the fitness signal to average out stochastic variation, and
-both replicates converged reliably.
+In the binary encoding conditions, the Gray-coded mutation rate of 0.005
+per bit produces much smaller per-parameter perturbations on average, so
+offspring stay close to high-performing parents and the population mean
+tracks best-individual fitness more reliably.
+
+With the action-space barrier removed (Test 6, continuous), evaluation noise
+is less damaging because the fitness landscape is smooth: every small
+improvement to thrust timing produces a proportional improvement in reward,
+so the signal-to-noise ratio is much better. The 200-generation budget
+further allows the fitness signal to average out episode-to-episode variation,
+and both replicates converged reliably.
 
 == The role of neutrality at small population size
 
