@@ -51,7 +51,8 @@ class GeneticAlgorithm:
             'max_fitness': [],
             'hamming_distance': [],
             'genetic_entropy': [],
-            'unique_genotypes': []
+            'unique_genotypes': [],
+            'phenotypic_diversity': []
         }
         # Lineage tracking (optional)
         self.lineage_tracking = lineage_tracking
@@ -178,6 +179,16 @@ class GeneticAlgorithm:
         self.history['hamming_distance'].append(diversity_metrics['hamming_distance'])
         self.history['genetic_entropy'].append(diversity_metrics['genetic_entropy'])
         self.history['unique_genotypes'].append(diversity_metrics['unique_genotypes'])
+
+        # Phenotypic diversity: mean pairwise Euclidean distance on decoded params
+        if hasattr(self.landscape, 'get_phenotype'):
+            phenotypes = np.array([self.landscape.get_phenotype(g) for g in self.population])
+            from scipy.spatial.distance import pdist
+            dists = pdist(phenotypes, metric='euclidean')
+            self.history['phenotypic_diversity'].append(float(np.mean(dists)))
+        else:
+            self.history['phenotypic_diversity'].append(0.0)
+
         if self.lineage_tracking:
             self._record_snapshot()
 

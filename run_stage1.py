@@ -171,7 +171,7 @@ CONFIG = {
     "MUTATION_RATE": 0.005,     # per-bit flip probability
     "TOURNAMENT_SIZE": 3,
     "RECORD_INTERVAL": 1,       # record stats every N generations
-    "N_REPLICATES": 2,          # independent GA runs (different seeds)
+    "N_REPLICATES": 1,          # independent GA runs (different seeds)
 
     # ---- Evolution snapshots ------------------------------------------------
     # Generations at which to save the best-so-far genome for trajectory analysis.
@@ -283,10 +283,14 @@ def run_single_replicate(config, replicate_seed, replicate_idx):
             split_history['best_train_score'].append(tr)
             split_history['best_test_score'].append(te)
             if config['VERBOSE']:
+                s2_fit, r1, rmean, rstd = landscape.evaluate_s2(
+                    ga.population[int(np.argmax(fitness_values))])
                 print(f"Gen {ga.generation}: "
-                      f"Mean Fitness={np.mean(fitness_values):.3f}, "
-                      f"Diversity={ga.history['hamming_distance'][-1]:.2f}, "
-                      f"Train={tr:.3f}, Test={te:.3f}")
+                      f"[S1] Mean={np.mean(fitness_values):.3f} "
+                      f"Div={ga.history['hamming_distance'][-1]:.0f} "
+                      f"Tr={tr:.3f} Te={te:.3f} | "
+                      f"[S2] R1={r1:.0f} Rmean={rmean:.0f} "
+                      f"Rstd={rstd:.0f} Fit={s2_fit:.3f}")
     history = ga.history
     elapsed = time.time() - t0
 

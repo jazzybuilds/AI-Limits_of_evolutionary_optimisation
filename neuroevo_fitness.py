@@ -416,6 +416,16 @@ class NeuroevoFitnessLandscape:
             self._eval_cache[key] = (fitness, float(train_score), float(test_score))
         return self._eval_cache[key][0]
 
+    def get_phenotype(self, genome):
+        """
+        Decode genome to flat float parameter vector (phenotype).
+        Used for phenotypic diversity tracking.
+        """
+        if self.genome_encoding == 'realvalued':
+            return self.decoder.decode_realvalued(genome)
+        params = self.decoder.decode(genome)
+        return np.concatenate([v.ravel() for v in params.values()])
+
     def evaluate_split(self, genome):
         """
         Same as evaluate() but returns (train_score, test_score, composite).
@@ -427,6 +437,52 @@ class NeuroevoFitnessLandscape:
             self.evaluate(genome)  # populate cache
         fitness, train_score, test_score = self._eval_cache[key]
         return train_score, test_score, fitness
+
+    def evaluate_s2(self, genome, n_episodes=3, base_seed=0):
+        """
+        Run n_episodes on the first training env and return Stage 2 fitness
+        alongside the Stage 1 composite, for side-by-side comparison.
+
+        Stage 2 formula (raw cumulative rewards, no normalisation per episode):
+            perf        = clip((R_mean + 200) / 500,       0, 1)
+            improvement = clip((R_mean - R1  + 500) / 1000, 0, 1)
+            reliability = clip(1 - sigma / 200,             0, 1)
+            f_s2 = 0.40*perf + 0.35*improvement + 0.25*reliability
+
+        NOTE: for a non-plastic agent improvement = 0.5 always (R_mean == R1),
+        so the theoretical maximum is 0.825.
+
+        Returns: (s2_fitness, R1, R_mean, R_std)
+        """
+        # Ensure params are set (reuse evaluate() cache path)
+        if genome.tobytes() not in self._eval_cache:
+            self.evaluate(genome)
+        if self.genome_encoding == 'realvalued':
+            params = self.decoder.decode_realvalued(genome)
+        else:
+            params = self.decoder.decode(genome)
+        self.controller.set_params(params)
+
+        env = self._train_env_list[0]
+        returns = []
+        for ep_i in range(n_episodes):
+            ep_seed = base_seed + ep_i * 1000
+            reward, _, _ = _run_episode(
+                env, self.controller, self.max_steps,
+                self.obs_flat_fn, seed=ep_seed,
+                continuous_action=self.continuous_actions,
+            )
+            returns.append(reward)
+
+        r = np.array(returns, dtype=float)
+        R_mean = float(np.mean(r))
+        R1     = float(r[0])
+        sigma  = float(np.std(r))
+        perf        = float(np.clip((R_mean + 200.0) / 500.0,        0.0, 1.0))
+        improvement = float(np.clip((R_mean - R1 + 500.0) / 1000.0, 0.0, 1.0))
+        reliability = float(np.clip(1.0 - sigma / 200.0,             0.0, 1.0))
+        s2_fit = 0.40 * perf + 0.35 * improvement + 0.25 * reliability
+        return float(s2_fit), R1, R_mean, sigma
 
     # ------------------------------------------------------------------
     # Internal helpers

@@ -1,0 +1,228 @@
+{
+  "sweep_config": {
+    "ENV_TYPE": "lunarlander_continuous",
+    "LUNARLANDER_CONTINUOUS_TRAIN_PARAMS": [
+      {},
+      {
+        "wind_power": 5.0,
+        "enable_wind": true
+      }
+    ],
+    "LUNARLANDER_CONTINUOUS_TEST_PARAMS": [
+      {
+        "gravity": -7.0
+      },
+      {
+        "gravity": -11.5
+      },
+      {
+        "wind_power": 15.0,
+        "turbulence_power": 1.5,
+        "enable_wind": true
+      }
+    ],
+    "MINIGRID_TRAIN_ENVS": [
+      "MiniGrid-Empty-5x5-v0"
+    ],
+    "MINIGRID_TEST_ENVS": [
+      "MiniGrid-Empty-5x5-v0"
+    ],
+    "CARTPOLE_TRAIN_PARAMS": [
+      {}
+    ],
+    "CARTPOLE_TEST_PARAMS": [],
+    "ACROBOT_TRAIN_PARAMS": [
+      {}
+    ],
+    "ACROBOT_TEST_PARAMS": [],
+    "LUNARLANDER_TRAIN_PARAMS": [
+      {}
+    ],
+    "LUNARLANDER_TEST_PARAMS": [],
+    "MOUNTAINCAR_TRAIN_PARAMS": [
+      {}
+    ],
+    "MOUNTAINCAR_TEST_PARAMS": [],
+    "MOUNTAINCARCONTINUOUS_TRAIN_PARAMS": [
+      {}
+    ],
+    "MOUNTAINCARCONTINUOUS_TEST_PARAMS": [],
+    "MOUNTAINCARCONTINUOUS_MAX_STEPS": 999,
+    "TRAIN_SEEDS": [
+      0,
+      1,
+      2
+    ],
+    "TEST_SEEDS": [
+      10,
+      11,
+      12
+    ],
+    "N_EVAL_EPISODES": 2,
+    "MAX_STEPS_PER_EPISODE": 500,
+    "ACROBOT_MAX_STEPS": 200,
+    "MOUNTAINCAR_MAX_STEPS": 200,
+    "CONTROLLER_TYPE": "ctrnn",
+    "HIDDEN_SIZE": 8,
+    "CTRNN_DT": 0.2,
+    "GENOME_ENCODING": "binary",
+    "BITS_PER_WEIGHT": 16,
+    "FITNESS_W_PERF": 0.45,
+    "FITNESS_W_GEN": 0.55,
+    "EPISTASIS_K": 2,
+    "DECODER_SEED": 42,
+    "POPULATION_SIZE": 20,
+    "GENERATIONS": 100,
+    "MUTATION_RATE": 0.005,
+    "TOURNAMENT_SIZE": 3,
+    "RECORD_INTERVAL": 1,
+    "N_REPLICATES": 2,
+    "SNAPSHOT_GENS": [],
+    "OUTPUT_DIR": "/Users/jason1/Documents/Sussex_Uni/Adaptive_systems/Alife_Assignment/results_stage1",
+    "VERBOSE": true
+  },
+  "p_values": [
+    0.0,
+    0.25,
+    0.5,
+    0.75,
+    0.9
+  ],
+  "results": [
+    {
+      "p": 0.0,
+      "n_replicates": 2,
+      "replicates": [
+        {
+          "best_fitness": 0.7617345320516411,
+          "geno_mean": 205.78311620635742,
+          "geno_final": 93.35263157894737,
+          "pheno_mean": 9.741129699275,
+          "pheno_final": 7.195710896270966
+        },
+        {
+          "best_fitness": 0.6551822035366741,
+          "geno_mean": 190.46618030224073,
+          "geno_final": 113.03684210526316,
+          "pheno_mean": 10.013392917149044,
+          "pheno_final": 7.675106602500022
+        }
+      ],
+      "avg": {
+        "best_fitness": 0.7084583677941576,
+        "geno_mean": 198.12464825429907,
+        "geno_final": 103.19473684210527,
+        "pheno_mean": 9.877261308212022,
+        "pheno_final": 7.435408749385494
+      }
+    },
+    {
+      "p": 0.25,
+      "n_replicates": 2,
+      "replicates": [
+        {
+          "best_fitness": 0.3871275891394155,
+          "geno_mean": 251.1313705054716,
+          "geno_final": 242.34736842105258,
+          "pheno_mean": 8.921319240531293,
+          "pheno_final": 6.80197463386474
+        },
+        {
+          "best_fitness": 0.29060695956418325,
+          "geno_mean": 340.2872329338196,
+          "geno_final": 122.2421052631579,
+          "pheno_mean": 10.664046165366814,
+          "pheno_final": 6.604351401118466
+        }
+      ],
+      "avg": {
+        "best_fitness": 0.33886727435179936,
+        "geno_mean": 295.7093017196456,
+        "geno_final": 182.29473684210524,
+        "pheno_mean": 9.792682702949055,
+        "pheno_final": 6.703163017491603
+      }
+    },
+    {
+      "p": 0.5,
+      "n_replicates": 2,
+      "replicates": [
+        {
+          "best_fitness": 0.7160375267692096,
+          "geno_mean": 344.0302240750391,
+          "geno_final": 347.86315789473684,
+          "pheno_mean": 8.769553331417912,
+          "pheno_final": 9.102835743394348
+        },
+        {
+          "best_fitness": 0.7576143546851241,
+          "geno_mean": 415.6333507034913,
+          "geno_final": 381.12105263157895,
+          "pheno_mean": 9.145903887714939,
+          "pheno_final": 9.900453060251788
+        }
+      ],
+      "avg": {
+        "best_fitness": 0.7368259407271669,
+        "geno_mean": 379.8317873892652,
+        "geno_final": 364.4921052631579,
+        "pheno_mean": 8.957728609566425,
+        "pheno_final": 9.501644401823068
+      }
+    },
+    {
+      "p": 0.75,
+      "n_replicates": 2,
+      "replicates": [
+        {
+          "best_fitness": 0.6321882664071986,
+          "geno_mean": 761.502292860865,
+          "geno_final": 586.6210526315789,
+          "pheno_mean": 10.008781311876891,
+          "pheno_final": 7.857635813072359
+        },
+        {
+          "best_fitness": 0.30077535231001806,
+          "geno_mean": 834.2285044293902,
+          "geno_final": 967.1210526315791,
+          "pheno_mean": 10.134082299865161,
+          "pheno_final": 13.053171510526461
+        }
+      ],
+      "avg": {
+        "best_fitness": 0.46648180935860833,
+        "geno_mean": 797.8653986451277,
+        "geno_final": 776.871052631579,
+        "pheno_mean": 10.071431805871025,
+        "pheno_final": 10.45540366179941
+      }
+    },
+    {
+      "p": 0.9,
+      "n_replicates": 2,
+      "replicates": [
+        {
+          "best_fitness": 0.9413205362134162,
+          "geno_mean": 2053.6625325690466,
+          "geno_final": 974.2684210526317,
+          "pheno_mean": 9.94103219741465,
+          "pheno_final": 7.315153047834579
+        },
+        {
+          "best_fitness": 0.39533946203329484,
+          "geno_mean": 2003.4759770713913,
+          "geno_final": 2153.036842105263,
+          "pheno_mean": 9.75318634969546,
+          "pheno_final": 10.165000883779497
+        }
+      ],
+      "avg": {
+        "best_fitness": 0.6683299991233556,
+        "geno_mean": 2028.569254820219,
+        "geno_final": 1563.6526315789474,
+        "pheno_mean": 9.847109273555056,
+        "pheno_final": 8.740076965807038
+      }
+    }
+  ]
+}
